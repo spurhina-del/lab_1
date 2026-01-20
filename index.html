@@ -9,20 +9,21 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; }
-        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .calc-input { width: 100%; min-width: 80px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; }
+        .calc-input:focus { border-color: #6366f1; ring: 2px ring-indigo-200; }
     </style>
 </head>
-<body class="bg-slate-100 min-h-screen pb-10">
-    <div class="max-w-5xl mx-auto px-4 pt-6">
-        <header class="bg-indigo-900 rounded-2xl p-6 text-white shadow-lg mb-6">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+<body class="bg-slate-50 min-h-screen pb-20">
+    <div class="max-w-6xl mx-auto px-4 pt-8">
+        <header class="bg-indigo-900 rounded-3xl p-8 text-white shadow-xl mb-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                 <div>
-                    <h1 class="text-2xl font-black uppercase tracking-tight">Лабораторна робота</h1>
+                    <h1 class="text-2xl font-black uppercase tracking-tighter">Лабораторна робота</h1>
                     <p class="text-indigo-300">Розрахунок техніко-економічної ефективності</p>
                 </div>
-                <div class="flex flex-wrap justify-center gap-3">
-                    <input id="studentName" type="text" placeholder="Прізвище Ім'я" class="bg-indigo-800 border-none rounded-lg px-4 py-2 text-white placeholder-indigo-400 outline-none focus:ring-2 focus:ring-indigo-400">
-                    <select id="variantSelect" onchange="render()" class="bg-white text-indigo-900 rounded-lg px-4 py-2 font-bold outline-none cursor-pointer">
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <input id="studentName" type="text" placeholder="Прізвище та ім'я" class="bg-indigo-800 border-none rounded-xl px-4 py-2 text-white placeholder-indigo-400 outline-none focus:ring-2 focus:ring-indigo-400">
+                    <select id="variantSelect" onchange="render()" class="bg-white text-indigo-900 rounded-xl px-4 py-2 font-bold cursor-pointer outline-none">
                         <option value="1">Варіант 1</option>
                         <option value="2">Варіант 2</option>
                         <option value="3">Варіант 3</option>
@@ -38,45 +39,45 @@
             </div>
         </header>
 
-        <main class="space-y-6">
-            <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                <div class="flex flex-col md:flex-row justify-between gap-4">
-                    <div>
-                        <h2 id="variantGoal" class="text-xl font-bold text-slate-800 underline decoration-indigo-500">Завантаження...</h2>
-                        <p id="variantDesc" class="text-slate-500 mt-1 italic"></p>
-                    </div>
-                    <div class="bg-slate-50 p-3 rounded-xl border border-dashed border-slate-300 text-sm font-mono">
-                        <div class="text-indigo-600 font-bold" id="variantFormulaTech">Kтех = ...</div>
-                        <div class="text-emerald-600 font-bold">Kекон = Kтех / Ц</div>
-                    </div>
+        <main class="space-y-8">
+            <section class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between gap-6">
+                <div>
+                    <h2 id="variantGoal" class="text-2xl font-bold text-slate-800">Завантаження...</h2>
+                    <p id="variantDesc" class="text-slate-500 mt-2 italic"></p>
+                </div>
+                <div class="bg-indigo-50 p-5 rounded-2xl border border-indigo-100 min-w-[200px]">
+                    <div class="font-mono text-indigo-700 font-bold text-lg" id="variantFormulaTech">Kтех = ...</div>
+                    <div class="font-mono text-emerald-600 font-bold text-lg mt-2 italic">Kекон = Kтех / Ц</div>
                 </div>
             </section>
 
-            <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <section class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead id="tableHeader" class="bg-slate-50 text-slate-400 text-[10px] uppercase tracking-widest font-black"></thead>
+                    <table class="w-full text-left">
+                        <thead id="tableHeader" class="bg-slate-50 text-slate-400 text-xs uppercase tracking-widest font-black"></thead>
                         <tbody id="tableBody" class="text-slate-700 divide-y divide-slate-100"></tbody>
                     </table>
                 </div>
             </section>
 
-            <section class="grid md:grid-cols-2 gap-6">
-                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm h-80">
+            <section class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm h-[400px]">
+                    <h3 class="text-slate-400 text-xs font-black uppercase mb-4 tracking-widest">Технічний коефіцієнт</h3>
                     <canvas id="techChart"></canvas>
                 </div>
-                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm h-80">
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm h-[400px]">
+                    <h3 class="text-slate-400 text-xs font-black uppercase mb-4 tracking-widest">Економічний коефіцієнт</h3>
                     <canvas id="econChart"></canvas>
                 </div>
             </section>
 
-            <section class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                <textarea id="conclusion" placeholder="Напишіть ваш висновок тут..." class="w-full h-32 p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500 transition-all"></textarea>
+            <section class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                <textarea id="conclusion" placeholder="Ваш висновок щодо вибору оптимального матеріалу..." class="w-full h-40 p-5 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 transition-all resize-none"></textarea>
             </section>
 
             <div class="text-center">
-                <button onclick="generatePersonalLink()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-10 rounded-2xl shadow-lg transition-transform active:scale-95">
-                    Зберегти та копіювати посилання
+                <button onclick="copyLink()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-black py-5 px-12 rounded-2xl shadow-lg shadow-indigo-200 transition-all active:scale-95 uppercase tracking-wider">
+                    Зберегти роботу та копіювати лінк
                 </button>
             </div>
         </main>
@@ -93,15 +94,15 @@
 
         const VARIANTS = {
             "1": {goal: "Рама велосипеда", mats: ["Сталь 45", "Алюміній Д16Т", "Карбон"], form: "σв / ρ", desc: "Питома міцність"},
-            "2": {goal: "Крило БПЛА", mats: ["Алюміній Д16Т", "Карбон", "Магній МЛ5"], form: "E / ρ", desc: "Питома жорсткість"},
-            "3": {goal: "Вал двигуна", mats: ["Сталь 45", "Титан ВТ6", "Карбон"], form: "σв / E", desc: "Пружна деформація"},
-            "4": {goal: "Корпус ракети", mats: ["Титан ВТ6", "Алюміній Д16Т", "Сталь 45"], form: "σв / (ρ * E)", desc: "Комплексний показник"},
-            "5": {goal: "Стійка шасі", mats: ["Титан ВТ6", "Сталь 45", "Карбон"], form: "σв / ρ", desc: "Міцність конструкції"},
-            "6": {goal: "Гвинт вертольота", mats: ["Карбон", "Алюміній Д16Т", "Магній МЛ5"], form: "E / ρ", desc: "Жорсткість лопаті"},
-            "7": {goal: "Кронштейн", mats: ["Сталь 45", "Алюміній Д16Т", "Магній МЛ5"], form: "σв / ρ", desc: "Питома міцність"},
-            "8": {goal: "Обшивка фюзеляжу", mats: ["Алюміній Д16Т", "Магній МЛ5", "Карбон"], form: "E / ρ", desc: "Опір деформації"},
-            "9": {goal: "Пружина підвіски", mats: ["Сталь 45", "Титан ВТ6", "Карбон"], form: "σв / E", desc: "Енергоємність"},
-            "10": {goal: "Захисний екран", mats: ["Сталь 45", "Титан ВТ6", "Алюміній Д16Т"], form: "σв / (ρ * E)", desc: "Технічна якість"}
+            "2": {goal: "Корпус пристрою", mats: ["Алюміній Д16Т", "Титан ВТ6", "Карбон"], form: "σв / (ρ * E)", desc: "Міцність і жорсткість"},
+            "3": {goal: "Вал редуктора", mats: ["Сталь 45", "Титан ВТ6", "Карбон"], form: "σв / E", desc: "Коефіцієнт пружності"},
+            "4": {goal: "Крило літака", mats: ["Алюміній Д16Т", "Магній МЛ5", "Карбон"], form: "E / ρ", desc: "Питома жорсткість"},
+            "5": {goal: "Обшивка ракети", mats: ["Титан ВТ6", "Сталь 45", "Карбон"], form: "σв / ρ", desc: "Питома міцність при нагріві"},
+            "6": {goal: "Тримач супутника", mats: ["Магній МЛ5", "Карбон", "Алюміній Д16Т"], form: "E / ρ", desc: "Стабільність розмірів"},
+            "7": {goal: "Стійка шасі", mats: ["Титан ВТ6", "Сталь 45", "Алюміній Д16Т"], form: "σв / (ρ * E)", desc: "Надійність конструкції"},
+            "8": {goal: "Лопать турбіни", mats: ["Карбон", "Титан ВТ6", "Сталь 45"], form: "σв / ρ", desc: "Робота під навантаженням"},
+            "9": {goal: "Приладова панель", mats: ["Магній МЛ5", "Алюміній Д16Т", "Карбон"], form: "E / (ρ * σв)", desc: "Мінімальна деформація"},
+            "10": {goal: "Пружинний елемент", mats: ["Сталь 45", "Титан ВТ6", "Карбон"], form: "σв / E", desc: "Енергоємність"}
         };
 
         let tChart, eChart;
@@ -114,94 +115,57 @@
             document.getElementById("variantDesc").innerText = v.desc;
             document.getElementById("variantFormulaTech").innerText = "Kтех = " + v.form;
 
-            document.getElementById("tableHeader").innerHTML = `<tr><th class="p-4">Параметр</th>${v.mats.map(m => `<th class="p-4">${m}</th>`).join('')}</tr>`;
+            document.getElementById("tableHeader").innerHTML = `<tr><th class="p-5">Параметр</th>${v.mats.map(m => `<th class="p-5">${m}</th>`).join('')}</tr>`;
             
             let html = "";
-            const rows = [
-                {n: "Границя міцності (σв), МПа", k: "sigma_v"},
-                {n: "Густина (ρ), кг/м³", k: "rho"},
-                {n: "Модуль пружності (E), ГПа", k: "E"}
+            const props = [
+                {label: "σв (МПа)", key: "sigma_v"},
+                {label: "ρ (кг/м³)", key: "rho"},
+                {label: "E (ГПа)", key: "E"}
             ];
 
-            rows.forEach(r => {
-                html += `<tr class="bg-white"><td class="p-4 font-semibold text-xs text-slate-400">${r.n}</td>${v.mats.map(m => `<td class="p-4 font-mono">${MATERIALS[m][r.k]}</td>`).join('')}</tr>`;
+            props.forEach(p => {
+                html += `<tr class="bg-white"><td class="p-5 font-bold text-xs text-slate-400">${p.label}</td>${v.mats.map(m => `<td class="p-5 font-mono">${MATERIALS[m][p.key]}</td>`).join('')}</tr>`;
             });
 
-            // Поля вводу для студента
-            html += `<tr class="bg-indigo-50/50"><td class="p-4 font-bold text-indigo-700 italic">Вартість (Ц), $/кг</td>${v.mats.map((_, i) => `<td class="p-4"><input type="number" step="0.01" class="v-price w-24 p-2 rounded border border-indigo-200 outline-none focus:ring-2 focus:ring-indigo-500" data-idx="${i}" placeholder="0.00"></td>`).join('')}</tr>`;
-            html += `<tr class="bg-slate-50"><td class="p-4 font-bold text-slate-700 italic">Ваш розрахунок Kтех</td>${v.mats.map((_, i) => `<td class="p-4"><input type="number" step="0.001" class="v-ktech w-24 p-2 rounded border border-slate-300 outline-none focus:ring-2 focus:ring-slate-400" data-idx="${i}" placeholder="0.000"></td>`).join('')}</tr>`;
-            html += `<tr class="bg-emerald-50/50"><td class="p-4 font-bold text-emerald-700 italic">Результат Kекон</td>${v.mats.map((_, i) => `<td class="p-4 font-black text-emerald-600 text-lg" id="res-kecon-${i}">0.000</td>`).join('')}</tr>`;
+            // Рядки для вводу студентом
+            html += `<tr class="bg-indigo-50/30"><td class="p-5 font-bold text-indigo-600">Вартість (Ц), $/кг</td>${v.mats.map((_, i) => `<td class="p-5"><input type="number" step="0.01" class="calc-input v-price" data-idx="${i}" placeholder="0.00"></td>`).join('')}</tr>`;
+            html += `<tr class="bg-white"><td class="p-5 font-bold text-slate-600">Ваш розрахунок Kтех</td>${v.mats.map((_, i) => `<td class="p-5"><input type="number" step="0.0001" class="calc-input v-ktech" data-idx="${i}" placeholder="0.000"></td>`).join('')}</tr>`;
+            html += `<tr class="bg-emerald-50/30"><td class="p-5 font-bold text-emerald-700">Результат Kекон</td>${v.mats.map((_, i) => `<td class="p-5 font-black text-emerald-600 text-lg" id="res-kecon-${i}">0.000</td>`).join('')}</tr>`;
 
             document.getElementById("tableBody").innerHTML = html;
-            initCharts(v.mats);
             
-            // Додаємо слухачі подій для автооновлення
-            document.querySelectorAll('input').forEach(el => el.addEventListener('input', updateCharts));
+            initCharts(v.mats);
+            document.querySelectorAll('.calc-input').forEach(input => input.addEventListener('input', updateCharts));
             restoreData();
         }
 
         function initCharts(labels) {
+            const chartStyles = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } };
             if(tChart) tChart.destroy();
             if(eChart) eChart.destroy();
 
-            const cfg = (ctx, label, color) => new Chart(document.getElementById(ctx), {
+            tChart = new Chart(document.getElementById('techChart'), {
                 type: 'bar',
-                data: { labels: labels, datasets: [{ label: label, data: [], backgroundColor: color, borderRadius: 10 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                data: { labels, datasets: [{ data: [], backgroundColor: '#6366f1', borderRadius: 12 }] },
+                options: chartStyles
             });
 
-            tChart = cfg('techChart', 'Kтех', '#6366f1');
-            eChart = cfg('econChart', 'Kекон', '#10b981');
+            eChart = new Chart(document.getElementById('econChart'), {
+                type: 'bar',
+                data: { labels, datasets: [{ data: [], backgroundColor: '#10b981', borderRadius: 12 }] },
+                options: chartStyles
+            });
         }
 
         function updateCharts() {
             const ktInputs = document.querySelectorAll('.v-ktech');
             const prInputs = document.querySelectorAll('.v-price');
             
-            const ktValues = Array.from(ktInputs).map(i => parseFloat(i.value) || 0);
-            const prValues = Array.from(prInputs).map(i => parseFloat(i.value) || 0);
+            const ktData = Array.from(ktInputs).map(i => parseFloat(i.value) || 0);
+            const prData = Array.from(prInputs).map(i => parseFloat(i.value) || 0);
             
-            const keValues = ktValues.map((kt, i) => {
-                const res = prValues[i] > 0 ? (kt / prValues[i]).toFixed(3) : "0.000";
+            const keData = ktData.map((kt, i) => {
+                const res = prData[i] > 0 ? (kt / prData[i]).toFixed(4) : "0.0000";
                 document.getElementById(`res-kecon-${i}`).innerText = res;
                 return parseFloat(res);
-            });
-
-            tChart.data.datasets[0].data = ktValues;
-            eChart.data.datasets[0].data = keValues;
-            tChart.update();
-            eChart.update();
-        }
-
-        function generatePersonalLink() {
-            const p = new URLSearchParams();
-            p.set('v', document.getElementById('variantSelect').value);
-            p.set('n', document.getElementById('studentName').value);
-            p.set('c', document.getElementById('conclusion').value);
-            
-            document.querySelectorAll('.v-price').forEach(i => p.set('p'+i.dataset.idx, i.value));
-            document.querySelectorAll('.v-ktech').forEach(i => p.set('k'+i.dataset.idx, i.value));
-            
-            const link = window.location.origin + window.location.pathname + '?' + p.toString();
-            navigator.clipboard.writeText(link);
-            alert("Посилання скопійовано! Можете надсилати його на перевірку.");
-        }
-
-        function restoreData() {
-            const p = new URLSearchParams(window.location.search);
-            if(p.get('n')) document.getElementById('studentName').value = p.get('n');
-            if(p.get('c')) document.getElementById('conclusion').value = p.get('c');
-            
-            document.querySelectorAll('.v-price').forEach(i => { if(p.get('p'+i.dataset.idx)) i.value = p.get('p'+i.dataset.idx); });
-            document.querySelectorAll('.v-ktech').forEach(i => { if(p.get('k'+i.dataset.idx)) i.value = p.get('k'+i.dataset.idx); });
-            updateCharts();
-        }
-
-        window.onload = () => {
-            const p = new URLSearchParams(window.location.search);
-            if(p.get('v')) document.getElementById('variantSelect').value = p.get('v');
-            render();
-        };
-    </script>
-</body>
-</html>
